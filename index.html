@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="pandoc" />
+
+        <meta name="author" content="Josefina Arcagni" />
+    
+    
+    <title>TP1 - Citometría de flujo</title>
+    <!-- Material Design fonts -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+        <script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
+        <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="site_libs/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="site_libs/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+        <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+        <script src="site_libs/navigation-1.1/tabsets.js"></script>
+        <link href="site_libs/magnific-popup-1.1.0/magnific-popup.css" rel="stylesheet" />
+        <script src="site_libs/magnific-popup-1.1.0/jquery.magnific-popup.min.js"></script>
+        <link href="site_libs/bootstrap_material-0.1/bootstrap-material-design.min.css" rel="stylesheet" />
+        <link href="site_libs/bootstrap_material-0.1/ripples.min.css" rel="stylesheet" />
+        <script src="site_libs/bootstrap_material-0.1/material.min.js"></script>
+        <script src="site_libs/bootstrap_material-0.1/ripples.min.js"></script>
+        <link href="site_libs/material-0.1/material.css" rel="stylesheet" />
+        <script src="site_libs/material-0.1/material.js"></script>
+    
+    
+    
+    
+    <!-- tabsets -->
+    <script>
+      $(document).ready(function () {
+	  window.buildTabsets("toc");
+      });
+      $(document).ready(function () {
+	  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+	      $(this).parent().toggleClass('nav-tabs-open')
+	  });
+      });
+    </script>
+
+    <!-- code folding -->
+    
+    <!-- code download -->
+    
+
+    <!-- tabsets dropdown -->
+
+    <style type="text/css">
+      .tabset-dropdown > .nav-tabs {
+	  display: inline-table;
+	  max-height: 500px;
+	  min-height: 44px;
+	  overflow-y: auto;
+	  background: white;
+	  border: 1px solid #ddd;
+	  border-radius: 4px;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+	  content: "&#xe258;";
+	  border: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .pages .tabset-dropdown > .nav-tabs > li.active {
+	  display: block;
+      }
+
+      .pages .tabset-dropdown > .nav-tabs > li.active > a {
+	  background-color: transparent !important;
+	  color: #000000 !important;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li > a,
+      .tabset-dropdown > .nav-tabs > li > a:focus,
+      .tabset-dropdown > .nav-tabs > li > a:hover {
+	  border: none;
+	  display: inline-block;
+	  border-radius: 4px;
+	  background-color: transparent;
+	  color: #00A698 !important;
+	  font-weight: 300 !important;
+	  font-size: 14px;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+	  display: block;
+	  float: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li {
+	  display: none;
+      }
+    </style>
+    
+</head>
+
+<body>
+
+  <div class="header-panel shadow z-2">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-3">
+	  	  <div id="header">
+	    <h1 class="title">TP1 - Citometría de flujo</h1>
+	    	    <h1 class="subtitle">Fisiología 1</h1>
+	    	    	    	    <h4 class="author">Josefina Arcagni</h4>
+	    	    	    	    <h4 class="date">26/04/2021</h4>
+	    	  </div>
+	  	</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-fluid main-container">
+    <div class="row">
+
+<nav class="col-xs-3 menu">
+<div id="toc">
+<ul>
+<li><a href="#introducción">Introducción</a></li>
+<li><a href="#hola">Poblaciones de CD14+ y CD19+</a></li>
+<li><a href="#chau">Monocitos</a></li>
+<li><a href="#perfil-inmunológico">Perfil inmunológico</a></li>
+<li><a href="#conclusiones">Conclusiones</a></li>
+</ul>
+</div>
+</nav>
+      
+<div class="pages col-xs-9">
+
+
+    
+<div class="row">
+
+<div class="col-xs-10">
+<div id="introducción" class="section level1">
+<h1>Introducción</h1>
+<p>Realizaremos un análisis inmunológico sobre muestras de sangre de once pacientes trasplantados renales que recibieron por 30 días un tratamiento inmunosupresor de mantenimiento de <em>corticoides, micofenolato mofetil y belatacept</em>. Este análisis se basa en definir las poblaciones de <strong>monocitos y linfocitos B</strong>. Para este se realizan inmunomarcaciones con anticuerpos monoclonales conjugados a los siguientes fluorocromos:</p>
+<ul>
+<li>CD14 = PE Cy7</li>
+<li>CD19 = Texas Red</li>
+<li>APC = CD32, CD86.</li>
+<li>APC-H7 = CD16, CD40</li>
+<li>FITC = CD64, CD80</li>
+</ul>
+<p>Por paciente tenemos tres tubos marcados de la siguiente manera:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Tubo</th>
+<th>PE</th>
+<th>Cy7</th>
+<th>TEXAS RED</th>
+<th>APC</th>
+<th>APC-H7</th>
+<th>FITC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>CD14</td>
+<td>CD19</td>
+<td>ISOTIPO</td>
+<td>ISOTIPO</td>
+<td>ISOTIPO</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>CD14</td>
+<td>CD19</td>
+<td>CD32</td>
+<td>CD16</td>
+<td>CD64</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>CD14</td>
+<td>CD19</td>
+<td>CD86</td>
+<td>CD40</td>
+<td>CD80</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="hola" class="section level1">
+<h1>Poblaciones de CD14+ y CD19+</h1>
+<p>Para cada tubo (tres por paciente) creamos “gates” para diferenciar las poblaciones CD14+ y CD19+. Las gates dividirán las poblaciones en cuatro ventanas para diferenciar las poblaciones + y - de CD14 y CD19.</p>
+<pre class="code1"><code>gate1 = QuadGate((4.046e+03, 3.780e+03), (&#39;PE-Cy7-A&#39;, &#39;PE-Texas Red-A&#39;), region=&#39;bottom right&#39;, name=&#39;CD3+CD4-&#39;)
+gate2 = QuadGate((4.046e+03, 3.780e+03), (&#39;PE-Cy7-A&#39;, &#39;PE-Texas Red-A&#39;), region=&#39;top right&#39;, name=&#39;CD3+CD4+&#39;)
+gate3 = QuadGate((4.046e+03, 3.780e+03), (&#39;PE-Cy7-A&#39;, &#39;PE-Texas Red-A&#39;), region=&#39;top left&#39;, name=&#39;CD3-CD4+&#39;)
+gate4 = QuadGate((4.046e+03, 3.780e+03), (&#39;PE-Cy7-A&#39;, &#39;PE-Texas Red-A&#39;), region=&#39;bottom left&#39;, name=&#39;CD3-CD4-&#39;)</code></pre>
+<p>Para identificar la población CD14+ realizamos la unión entre el <strong>Gate1 y Gate2</strong>. Para identificar la población CD19+ realizamos la unión entre la <strong>Gate2 y el Gate3</strong>. Para encontrar la población CD14+ y CD19+ realizamos la intersección entre las poblaciones anteriores, es decir buscamos el <strong>Gate2</strong>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Nº Tubo</th>
+<th>CD14+</th>
+<th>CD19+</th>
+<th>CD14+ y CD19+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>26166,00</td>
+<td>6063,00</td>
+<td>4008,00</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>23001,00</td>
+<td>4934,00</td>
+<td>4058,00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>40122,00</td>
+<td>6895,00</td>
+<td>5778,00</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>20704,00</td>
+<td>18934,00</td>
+<td>13977,00</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>2281,00</td>
+<td>1552,00</td>
+<td>1372,00</td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td>5691,00</td>
+<td>4237,00</td>
+<td>3875,00</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>11903,00</td>
+<td>10005,00</td>
+<td>8724,00</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>8479,00</td>
+<td>7172,00</td>
+<td>5126,00</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>25984,00</td>
+<td>21673,00</td>
+<td>16957,00</td>
+</tr>
+<tr class="even">
+<td>19</td>
+<td>69549,00</td>
+<td>15125,00</td>
+<td>12449,00</td>
+</tr>
+<tr class="odd">
+<td>20</td>
+<td>10760,00</td>
+<td>3637,00</td>
+<td>2059,00</td>
+</tr>
+<tr class="even">
+<td>21</td>
+<td>20932,00</td>
+<td>1494,00</td>
+<td>1336,00</td>
+</tr>
+<tr class="odd">
+<td>25</td>
+<td>961,00</td>
+<td>709,00</td>
+<td>316,00</td>
+</tr>
+<tr class="even">
+<td>26</td>
+<td>10641,00</td>
+<td>4547,00</td>
+<td>1898,00</td>
+</tr>
+<tr class="odd">
+<td>27</td>
+<td>5723,00</td>
+<td>1090,00</td>
+<td>792,00</td>
+</tr>
+<tr class="even">
+<td>31</td>
+<td>8523,00</td>
+<td>4866,00</td>
+<td>2764,00</td>
+</tr>
+<tr class="odd">
+<td>32</td>
+<td>16851,00</td>
+<td>2733,00</td>
+<td>1865,00</td>
+</tr>
+<tr class="even">
+<td>33</td>
+<td>6136,00</td>
+<td>3797,00</td>
+<td>2008,00</td>
+</tr>
+<tr class="odd">
+<td>37</td>
+<td>5336,00</td>
+<td>9045,00</td>
+<td>3395,00</td>
+</tr>
+<tr class="even">
+<td>38</td>
+<td>1681,00</td>
+<td>537,00</td>
+<td>302,00</td>
+</tr>
+<tr class="odd">
+<td>39</td>
+<td>6773,00</td>
+<td>10527,00</td>
+<td>4043,00</td>
+</tr>
+<tr class="even">
+<td>43</td>
+<td>23695,00</td>
+<td>3549,00</td>
+<td>3077,00</td>
+</tr>
+<tr class="odd">
+<td>44</td>
+<td>4302,00</td>
+<td>1348,00</td>
+<td>1029,00</td>
+</tr>
+<tr class="even">
+<td>45</td>
+<td>10331,00</td>
+<td>2377,00</td>
+<td>2072,00</td>
+</tr>
+<tr class="odd">
+<td>49</td>
+<td>6504,00</td>
+<td>13440,00</td>
+<td>4112,00</td>
+</tr>
+<tr class="even">
+<td>50</td>
+<td>4432,00</td>
+<td>8762,00</td>
+<td>2575,00</td>
+</tr>
+<tr class="odd">
+<td>51</td>
+<td>8047,00</td>
+<td>12185,00</td>
+<td>4684,00</td>
+</tr>
+<tr class="even">
+<td>55</td>
+<td>5199,00</td>
+<td>6481,00</td>
+<td>2855,00</td>
+</tr>
+<tr class="odd">
+<td>56</td>
+<td>4947,00</td>
+<td>5580,00</td>
+<td>2201,00</td>
+</tr>
+<tr class="even">
+<td>57</td>
+<td>9728,00</td>
+<td>6529,00</td>
+<td>3316,00</td>
+</tr>
+<tr class="odd">
+<td>61</td>
+<td>3818,00</td>
+<td>8986,00</td>
+<td>3040,00</td>
+</tr>
+<tr class="even">
+<td>62</td>
+<td>2101,00</td>
+<td>3139,00</td>
+<td>1206,00</td>
+</tr>
+<tr class="odd">
+<td>63</td>
+<td>5740,00</td>
+<td>8967,00</td>
+<td>4504,00</td>
+</tr>
+</tbody>
+</table>
+<div class="figure">
+<img src="1.png" alt="" />
+<p class="caption">Gráfico 1: Poblaciones de CD14+ y CD19+ en cada tubo</p>
+</div>
+<div id="section" class="section level3 tabset tabset-fade tabset-pills unnumbered">
+<h3 class="tabset tabset-fade tabset-pills unnumbered"></h3>
+<div id="marcadores-en-cd14" class="section level4 unnumbered">
+<h4 class="unnumbered unnumbered">Marcadores en CD14+</h4>
+<p>Bucamos las células positivas para los siguientes marcadores en todos los tubos:</p>
+<ul>
+<li>APC y APC-H7: Isotipo ( <em>tubo 1</em> ), CD32 ( <em>tubo 2</em> ), CD86 ( <em>tubo 3</em> ).</li>
+<li>APC y FITC: Isotipo ( <em>tubo 1</em> ), CD16 ( <em>tubo 2</em> ), CD40 ( <em>tubo 3</em> ).</li>
+<li>APC-H7 y FITC: Isotipo ( <em>tubo 1</em> ), CD64 ( <em>tubo 2</em> ), CD80 ( <em>tubo 3</em> ).</li>
+</ul>
+<p>Buscamos dentro de CD14+ las poblaciones de APC-A, APC-Cy7-A y FITC-A positivas, y buscamos la intersección entre estas. Luego buscamos el porcentaje de cada una de las intersecciones sobre el total de CD194+.</p>
+<pre class="code2"><code>CD14p = tsample.gate(gate1|gate2) # getting CD14+ population subset
+
+maxCount4 = CD14p.data[&quot;APC-A&quot;].value_counts().keys()[0] # Finding maximum frecuency count marker
+greaterThanMaxCount4 = CD14p.data[&quot;APC-A&quot;].where(lambda x: x &gt; maxCount).dropna() # getting CD14+ population greater than maximum frequency marker
+e= greaterThanMaxCount4.value_counts().sum() # getting the sum of all events
+
+maxCount5 = CD14p.data[&quot;APC-Cy7-A&quot;].value_counts().keys()[0] # Finding maximum frecuency count marker
+greaterThanMaxCount5 = CD14p.data[&quot;APC-Cy7-A&quot;].where(lambda x: x &gt; maxCount).dropna()
+f= greaterThanMaxCount5.value_counts().sum()
+
+maxCount6 = CD14p.data[&quot;FITC-A&quot;].value_counts().keys()[0] # Finding maximum frecuency count marker
+greaterThanMaxCount6 = CD14p.data[&quot;FITC-A&quot;].where(lambda x: x &gt; maxCount).dropna()
+g= greaterThanMaxCount6.value_counts().sum()
+
+print(e &amp; f) 
+print(e &amp; g) 
+print(f &amp; g)</code></pre>
+<table>
+<colgroup>
+<col width="5%" />
+<col width="13%" />
+<col width="17%" />
+<col width="13%" />
+<col width="14%" />
+<col width="15%" />
+<col width="19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tubo</th>
+<th>APC y APC-H7</th>
+<th>APC y APC-H7 %</th>
+<th>APC y FITC</th>
+<th>APC y FITC %</th>
+<th>APC-H7 y FITC</th>
+<th>APC-H7 y FITC %</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>10272,00</td>
+<td>39,26</td>
+<td>2434,00</td>
+<td>9,30</td>
+<td>2577,00</td>
+<td>9,85</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>8768,00</td>
+<td>38,12</td>
+<td>257,00</td>
+<td>1,12</td>
+<td>1024,00</td>
+<td>4,45</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>707,00</td>
+<td>1,76</td>
+<td>37377,00</td>
+<td>93,16</td>
+<td>769,00</td>
+<td>1,92</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>432,00</td>
+<td>2,09</td>
+<td>1322,00</td>
+<td>6,39</td>
+<td>288,00</td>
+<td>1,39</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>1322,00</td>
+<td>57,96</td>
+<td>433,00</td>
+<td>18,98</td>
+<td>288,00</td>
+<td>12,63</td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td>2080,00</td>
+<td>36,55</td>
+<td>1568,00</td>
+<td>27,55</td>
+<td>34,00</td>
+<td>0,60</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>4353,00</td>
+<td>36,57</td>
+<td>1280,00</td>
+<td>10,75</td>
+<td>776,00</td>
+<td>6,52</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>578,00</td>
+<td>6,82</td>
+<td>64,00</td>
+<td>0,75</td>
+<td>1360,00</td>
+<td>16,04</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>3078,00</td>
+<td>11,85</td>
+<td>1496,00</td>
+<td>5,76</td>
+<td>5120,00</td>
+<td>19,70</td>
+</tr>
+<tr class="even">
+<td>19</td>
+<td>8,00</td>
+<td>0,01</td>
+<td>8,00</td>
+<td>0,01</td>
+<td>2056,00</td>
+<td>2,96</td>
+</tr>
+<tr class="odd">
+<td>20</td>
+<td>256,00</td>
+<td>2,38</td>
+<td>10280,00</td>
+<td>95,54</td>
+<td>16,00</td>
+<td>0,15</td>
+</tr>
+<tr class="even">
+<td>21</td>
+<td>1484,00</td>
+<td>7,09</td>
+<td>19524,00</td>
+<td>93,27</td>
+<td>1092,00</td>
+<td>5,22</td>
+</tr>
+<tr class="odd">
+<td>25</td>
+<td>522,00</td>
+<td>54,32</td>
+<td>778,00</td>
+<td>80,96</td>
+<td>618,00</td>
+<td>64,31</td>
+</tr>
+<tr class="even">
+<td>26</td>
+<td>2080,00</td>
+<td>19,55</td>
+<td>8224,00</td>
+<td>77,29</td>
+<td>544,00</td>
+<td>5,11</td>
+</tr>
+<tr class="odd">
+<td>27</td>
+<td>1152,00</td>
+<td>20,13</td>
+<td>5184,00</td>
+<td>90,58</td>
+<td>1033,00</td>
+<td>18,05</td>
+</tr>
+<tr class="even">
+<td>31</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+</tr>
+<tr class="odd">
+<td>32</td>
+<td>1,00</td>
+<td>0,01</td>
+<td>16515,00</td>
+<td>98,01</td>
+<td>5,00</td>
+<td>0,03</td>
+</tr>
+<tr class="even">
+<td>33</td>
+<td>2562,00</td>
+<td>41,75</td>
+<td>1154,00</td>
+<td>18,81</td>
+<td>18,00</td>
+<td>0,29</td>
+</tr>
+<tr class="odd">
+<td>37</td>
+<td>4248,00</td>
+<td>79,61</td>
+<td>5272,00</td>
+<td>98,80</td>
+<td>4248,00</td>
+<td>79,61</td>
+</tr>
+<tr class="even">
+<td>38</td>
+<td>1056,00</td>
+<td>62,82</td>
+<td>1540,00</td>
+<td>91,61</td>
+<td>1024,00</td>
+<td>60,92</td>
+</tr>
+<tr class="odd">
+<td>39</td>
+<td>368,00</td>
+<td>5,43</td>
+<td>313,00</td>
+<td>4,62</td>
+<td>2354,00</td>
+<td>34,76</td>
+</tr>
+<tr class="even">
+<td>43</td>
+<td>8849,00</td>
+<td>37,35</td>
+<td>519,00</td>
+<td>2,19</td>
+<td>577,00</td>
+<td>2,44</td>
+</tr>
+<tr class="odd">
+<td>44</td>
+<td>128,00</td>
+<td>2,98</td>
+<td>168,00</td>
+<td>3,91</td>
+<td>3520,00</td>
+<td>81,82</td>
+</tr>
+<tr class="even">
+<td>45</td>
+<td>264,00</td>
+<td>2,56</td>
+<td>9248,00</td>
+<td>89,52</td>
+<td>1,00</td>
+<td>0,01</td>
+</tr>
+<tr class="odd">
+<td>49</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+</tr>
+<tr class="even">
+<td>50</td>
+<td>2058,00</td>
+<td>46,44</td>
+<td>1035,00</td>
+<td>23,35</td>
+<td>30,00</td>
+<td>0,68</td>
+</tr>
+<tr class="odd">
+<td>51</td>
+<td>284,00</td>
+<td>3,53</td>
+<td>34,00</td>
+<td>0,42</td>
+<td>193,00</td>
+<td>2,40</td>
+</tr>
+<tr class="even">
+<td>55</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+</tr>
+<tr class="odd">
+<td>56</td>
+<td>2464,00</td>
+<td>49,81</td>
+<td>32,00</td>
+<td>0,65</td>
+<td>48,00</td>
+<td>0,97</td>
+</tr>
+<tr class="even">
+<td>57</td>
+<td>324,00</td>
+<td>3,33</td>
+<td>17,00</td>
+<td>0,17</td>
+<td>0,00</td>
+<td>0,00</td>
+</tr>
+<tr class="odd">
+<td>61</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+</tr>
+<tr class="even">
+<td>62</td>
+<td>1248,00</td>
+<td>59,40</td>
+<td>737,00</td>
+<td>35,08</td>
+<td>232,00</td>
+<td>11,04</td>
+</tr>
+<tr class="odd">
+<td>63</td>
+<td>5,00</td>
+<td>0,09</td>
+<td>97,00</td>
+<td>1,69</td>
+<td>3073,00</td>
+<td>53,54</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="marcadores-en-cd19" class="section level4 unnumbered">
+<h4 class="unnumbered unnumbered">Marcadores en CD19+</h4>
+<p>Bucamos las células positivas para los siguientes marcadores en todos los tubos:</p>
+<ul>
+<li>APC y APC-H7: Isotipo ( <em>tubo 1</em> ), CD32 ( <em>tubo 2</em> ), CD86 ( <em>tubo 3</em> ).</li>
+<li>APC y FITC: Isotipo ( <em>tubo 1</em> ), CD16 ( <em>tubo 2</em> ), CD40 ( <em>tubo 3</em> ).</li>
+<li>APC-H7 y FITC: Isotipo ( <em>tubo 1</em> ), CD64 ( <em>tubo 2</em> ), CD80 ( <em>tubo 3</em> ).</li>
+</ul>
+<p>Buscamos dentro CD19+ las poblaciones de APC-A, APC-Cy7-A y FITC-A positivas, y buscamos la intersección entre estas. Luego buscamos el porcentaje de cada una de las intersecciones sobre el total de CD19+.</p>
+<pre class="code3"><code>CD19p = tsample.gate(gate3|gate2) # getting CD19+ population subset
+
+maxCount4 = CD19p.data[&quot;APC-A&quot;].value_counts().keys()[0] # Finding maximum frecuency count marker
+greaterThanMaxCount4 = CD19p.data[&quot;APC-A&quot;].where(lambda x: x &gt; maxCount).dropna() # getting CD14+ population greater than maximum frequency marker
+e= greaterThanMaxCount4.value_counts().sum() # getting the sum of all events
+
+maxCount5 = CD19p.data[&quot;APC-Cy7-A&quot;].value_counts().keys()[0] # Finding maximum frecuency count marker
+greaterThanMaxCount5 = CD19p.data[&quot;APC-Cy7-A&quot;].where(lambda x: x &gt; maxCount).dropna()
+f= greaterThanMaxCount5.value_counts().sum()
+
+maxCount6 = CD14p.data[&quot;FITC-A&quot;].value_counts().keys()[0] # Finding maximum frecuency count marker
+greaterThanMaxCount6 = CD19p.data[&quot;FITC-A&quot;].where(lambda x: x &gt; maxCount).dropna()
+g= greaterThanMaxCount6.value_counts().sum()
+
+print(e &amp; f) 
+print(e &amp; g) 
+print(f &amp; g)</code></pre>
+<table>
+<colgroup>
+<col width="5%" />
+<col width="12%" />
+<col width="16%" />
+<col width="11%" />
+<col width="14%" />
+<col width="16%" />
+<col width="20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tubo</th>
+<th>APC y APC-H7</th>
+<th>APC y APC-H7 %</th>
+<th>APC y FITC</th>
+<th>APC y FITC %</th>
+<th>APC-H7 y FITC</th>
+<th>APC-H7 y FITC %</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00 0,00</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>23,00</td>
+<td>0,47</td>
+<td>22,00</td>
+<td>0,45</td>
+<td>542,00</td>
+<td>10,99</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>794,00</td>
+<td>11,52</td>
+<td>512,00</td>
+<td>7,43</td>
+<td>672,00</td>
+<td>9,75</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>512,00</td>
+<td>2,70</td>
+<td>1481,00</td>
+<td>7,82</td>
+<td>4,00</td>
+<td>0,02</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>826,00</td>
+<td>53,22</td>
+<td>312,00</td>
+<td>20,10</td>
+<td>316,00</td>
+<td>20,36</td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td>772,00</td>
+<td>18,22</td>
+<td>257,00</td>
+<td>6,07</td>
+<td>1376,00</td>
+<td>32,48</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>4128,00</td>
+<td>41,26</td>
+<td>40,00</td>
+<td>0,40</td>
+<td>96,00</td>
+<td>0,96</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>279,00</td>
+<td>3,89</td>
+<td>273,00</td>
+<td>3,81</td>
+<td>1369,00</td>
+<td>19,09</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>2088,00</td>
+<td>9,63</td>
+<td>2592,00</td>
+<td>11,96</td>
+<td>6182,00</td>
+<td>28,52</td>
+</tr>
+<tr class="even">
+<td>19</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+</tr>
+<tr class="odd">
+<td>20</td>
+<td>138,00</td>
+<td>3,79</td>
+<td>176,00</td>
+<td>4,84</td>
+<td>644,00</td>
+<td>17,71</td>
+</tr>
+<tr class="even">
+<td>21</td>
+<td>714,00</td>
+<td>47,79</td>
+<td>460,00</td>
+<td>30,79</td>
+<td>200,00</td>
+<td>13,39</td>
+</tr>
+<tr class="odd">
+<td>25</td>
+<td>513,00</td>
+<td>72,36</td>
+<td>544,00</td>
+<td>76,73</td>
+<td>584,00</td>
+<td>82,37</td>
+</tr>
+<tr class="even">
+<td>26</td>
+<td>65,00</td>
+<td>1,43</td>
+<td>10,00</td>
+<td>0,22</td>
+<td>0,00</td>
+<td>0,00</td>
+</tr>
+<tr class="odd">
+<td>27</td>
+<td>44,00</td>
+<td>4,04</td>
+<td>3,00</td>
+<td>0,28</td>
+<td>656,00</td>
+<td>60,18</td>
+</tr>
+<tr class="even">
+<td>31</td>
+<td>581,00</td>
+<td>11,94</td>
+<td>4645,00</td>
+<td>95,46</td>
+<td>533,00</td>
+<td>10,95</td>
+</tr>
+<tr class="odd">
+<td>32</td>
+<td>1120,00</td>
+<td>40,98</td>
+<td>32,00</td>
+<td>1,17</td>
+<td>301,00</td>
+<td>11,01</td>
+</tr>
+<tr class="even">
+<td>33</td>
+<td>2736,00</td>
+<td>72,06</td>
+<td>3584,00</td>
+<td>94,39</td>
+<td>2627,00</td>
+<td>69,19</td>
+</tr>
+<tr class="odd">
+<td>37</td>
+<td>8216,00</td>
+<td>90,83</td>
+<td>8714,00</td>
+<td>96,34</td>
+<td>8200,00</td>
+<td>90,66</td>
+</tr>
+<tr class="even">
+<td>38</td>
+<td>88,00</td>
+<td>16,39</td>
+<td>5,00</td>
+<td>0,93</td>
+<td>0,00</td>
+<td>0,00</td>
+</tr>
+<tr class="odd">
+<td>39</td>
+<td>528,00</td>
+<td>5,02</td>
+<td>161,00</td>
+<td>1,53</td>
+<td>256,00</td>
+<td>2,43</td>
+</tr>
+<tr class="even">
+<td>43</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>0,00</td>
+</tr>
+<tr class="odd">
+<td>44</td>
+<td>896,00</td>
+<td>66,47</td>
+<td>16,00</td>
+<td>1,19</td>
+<td>32,00</td>
+<td>2,37</td>
+</tr>
+<tr class="even">
+<td>45</td>
+<td>2050,00</td>
+<td>86,24</td>
+<td>2306,00</td>
+<td>97,01</td>
+<td>2050,00</td>
+<td>86,24</td>
+</tr>
+<tr class="odd">
+<td>49</td>
+<td>2054,00</td>
+<td>15,28</td>
+<td>4,00</td>
+<td>0,03</td>
+<td>1172,00</td>
+<td>8,72</td>
+</tr>
+<tr class="even">
+<td>50</td>
+<td>4146,00</td>
+<td>47,32</td>
+<td>1033,00</td>
+<td>11,79</td>
+<td>128,00</td>
+<td>1,46</td>
+</tr>
+<tr class="odd">
+<td>51</td>
+<td>2818,00</td>
+<td>23,13</td>
+<td>2314,00</td>
+<td>18,99</td>
+<td>2306,00</td>
+<td>18,92</td>
+</tr>
+<tr class="even">
+<td>55</td>
+<td>4096,00</td>
+<td>63,20</td>
+<td>6146,00</td>
+<td>94,83</td>
+<td>4144,00</td>
+<td>63,94</td>
+</tr>
+<tr class="odd">
+<td>56</td>
+<td>12,00</td>
+<td>0,22</td>
+<td>0,00</td>
+<td>0,00</td>
+<td>1280,00</td>
+<td>22,94</td>
+</tr>
+<tr class="even">
+<td>57</td>
+<td>4368,00</td>
+<td>66,90</td>
+<td>6168,00</td>
+<td>94,47</td>
+<td>4118,00</td>
+<td>63,07</td>
+</tr>
+<tr class="odd">
+<td>61</td>
+<td>4096,00</td>
+<td>45,58</td>
+<td>1328,00</td>
+<td>14,78</td>
+<td>0,00</td>
+<td>0,00</td>
+</tr>
+<tr class="even">
+<td>62</td>
+<td>17,00</td>
+<td>0,54</td>
+<td>84,00</td>
+<td>2,68</td>
+<td>784,00</td>
+<td>24,98</td>
+</tr>
+<tr class="odd">
+<td>63</td>
+<td>4104,00</td>
+<td>45,77</td>
+<td>3218,00</td>
+<td>35,89</td>
+<td>96,00</td>
+<td>1,07</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="section-1" class="section level3 tabset tabset-fade tabset-pills unnumbered">
+<h3 class="tabset tabset-fade tabset-pills unnumbered"></h3>
+<div id="apc-y-apc-h7" class="section level4 unnumbered">
+<h4 class="unnumbered unnumbered">APC y APC-H7 %</h4>
+<div class="figure">
+<img src="2.png" alt="" />
+<p class="caption">Gráfico 2: Porcentaje de APC y APC-H7 para CD14+ y CD19+ en cada tubo</p>
+</div>
+</div>
+<div id="apc-y-fitc" class="section level4 unnumbered">
+<h4 class="unnumbered unnumbered">APC y FITC %</h4>
+<div class="figure">
+<img src="3.png" alt="" />
+<p class="caption">Gráfico 3: Porcentaje de APC y FITC para CD14+ y CD19+ en cada tubo</p>
+</div>
+</div>
+<div id="apc-h7-y-fitc" class="section level4 unnumbered">
+<h4 class="unnumbered unnumbered">APC-H7 y FITC %</h4>
+<div class="figure">
+<img src="4.png" alt="" />
+<p class="caption">Gráfico 4: Porcentaje de APC-H7 y FITC para CD14+ y CD19+ en cada tubo</p>
+</div>
+</div>
+</div>
+</div>
+<div id="chau" class="section level1">
+<h1>Monocitos</h1>
+<div id="cd14-y-cd16" class="section level2">
+<h2>CD14 y CD16</h2>
+<p>Dentro de las CD14+ y CD19- buscamos las CD16-, CD16+, CD16++ y CD14++. De esta manera definimos por tubo las poblaciones de monocitos:</p>
+<ol style="list-style-type: decimal">
+<li>Monocito Clásico: CD14++ y CD16-</li>
+<li>Monocito Intermedio: CD14++ y CD16+</li>
+<li>Monocito No Clásico: CD14+ y CD16++</li>
+</ol>
+<p>Para esto usamos el siguiente código en el control de isotipo (tubo 1) y el tubo con CD16 (tubo 2).</p>
+<pre class="code"><code>CD14p = tsample.gate(gate2) 
+maxCount = CD14p.data[&quot;APC-Cy7-A&quot;].value_counts().keys()[0] #CD16-
+greaterThanMaxCount = CD14p.data[&quot;APC-Cy7-A&quot;].where(lambda x: x &lt; 3000).dropna() 
+a= greaterThanMaxCount.value_counts().sum() 
+
+maxCount1 = CD14p.data[&quot;APC-Cy7-A&quot;].value_counts().keys()[0] #CD16+
+greaterThanMaxCount1 = CD14p.data[&quot;APC-Cy7-A&quot;].where(lambda x: x &gt; maxCount).dropna() 
+b= greaterThanMaxCount1.value_counts().sum() 
+
+maxCount2 = CD14p.data[&quot;APC-Cy7-A&quot;].value_counts().keys()[0] #CD16++
+greaterThanMaxCount2 = CD14p.data[&quot;APC-Cy7-A&quot;].where(lambda x: x &gt; 6000).dropna() 
+c= greaterThanMaxCount2.value_counts().sum()  
+
+maxCount3 = CD14p.data[&quot;PE-Cy7-A&quot;].value_counts().keys()[0] # CD14++
+greaterThanMaxCount3 = CD14p.data[&quot;PE-Cy7-A&quot;].where(lambda x: x &gt; 6000).dropna()
+d= greaterThanMaxCount3.value_counts().sum()
+
+print(a &amp; d) 
+print(d &amp; b)
+print(c)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Nº Paciente</th>
+<th>CD14++ y CD16-</th>
+<th>CD14++ y CD16+</th>
+<th>CD14+ y CD16++</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1024,00</td>
+<td>4096,00</td>
+<td>3575,00</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>32,00</td>
+<td>12,00</td>
+<td>214,00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>161,00</td>
+<td>129,00</td>
+<td>505,00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>144,00</td>
+<td>144,00</td>
+<td>303,00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>268,00</td>
+<td>350,00</td>
+<td>806,00</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>168,00</td>
+<td>1056,00</td>
+<td>1835,00</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>80,00</td>
+<td>2,00</td>
+<td>226,00</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>102,00</td>
+<td>230,00</td>
+<td>1304,00</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>24,00</td>
+<td>24,00</td>
+<td>291,00</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>132,00</td>
+<td>52,00</td>
+<td>451,00</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>0,00</td>
+<td>8,00</td>
+<td>368,00</td>
+</tr>
+</tbody>
+</table>
+<div class="figure">
+<img src="5.png" alt="" />
+<p class="caption">Gráfico 5: Número de monocitos por tubo</p>
+</div>
+</div>
+</div>
+<div id="perfil-inmunológico" class="section level1">
+<h1>Perfil inmunológico</h1>
+<div id="análisis-de-monocitos-y-linfocitos-b" class="section level2">
+<h2>Análisis de monocitos y linfocitos B</h2>
+<p>Las poblaciones de monocitos y linfocitos B las obtuvimos con con el gate 1 (<a href="#hola">CD14+ y CD19+</a>). Realizamos un promedio de los tubos por paciente.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Nº Paciente</th>
+<th>Promedio Linfocitos y Monocitos B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>4614</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>6408</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>10269</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>5281</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>1002</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>2212</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>2580</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>2059</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>3790</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>2791</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>2917</td>
+</tr>
+</tbody>
+</table>
+<div class="figure">
+<img src="9.png" alt="" />
+<p class="caption">Gráfico 6: Monocitos y linfocitos B por paciente</p>
+</div>
+<p>La media total de monocitos y linfocitos para estos 11 pacientes es de <strong>3993,12</strong>. Para mediar la distancia de cada paciente a la media poblacional le restaremos la media a los monocitos y linfocitos B de cada paciente.</p>
+<div class="figure">
+<img src="10.png" alt="" />
+<p class="caption">Gráfico 7: Promedio de monocitos y linfocitos B por paciente menos la media poblacional</p>
+</div>
+<p>Podemos notar que la mayoría de los pacientes (7/11) están por debajo de la media poblacional. Esto quiere decir que estos pacientes tienen significantemente menos monocitos y linfocitos B que los otros 4 pacientes.</p>
+</div>
+<div id="conclusiones-sobre-subpoblaciones-de-monocitos" class="section level2">
+<h2>Conclusiones sobre subpoblaciones de monocitos</h2>
+<p>Obtuvimos las <a href="#chau">subpoblaciones de monocitos</a></p>
+<ol style="list-style-type: decimal">
+<li>La media de monocitos clásicos es de <strong>827</strong></li>
+<li>La media de monocitos intermedios es de <strong>848</strong></li>
+<li>la media de monocitos no clásicos <strong>430</strong></li>
+</ol>
+<p>Podemos asumir que en general los pacientes tienen cantidades parecidas de monocitos clásicos e intermedios y menor (1/2) cantidad de monocitos no clásicos.</p>
+<div id="section-2" class="section level3 tabset tabset-fade tabset-pills unnumbered">
+<h3 class="tabset tabset-fade tabset-pills unnumbered"></h3>
+<div id="monocitos-clásicos" class="section level4 unnumbered">
+<h4 class="unnumbered unnumbered">Monocitos Clásicos</h4>
+<div class="figure">
+<img src="6.png" alt="" />
+<p class="caption">Gráfico 8: Número de monocitos clásicos por tubo</p>
+</div>
+</div>
+<div id="monocitos-intermedios" class="section level4 unnumbered">
+<h4 class="unnumbered unnumbered">Monocitos Intermedios</h4>
+<div class="figure">
+<img src="7.png" alt="" />
+<p class="caption">Gráfico 9: Número de monocitos intermedios por tubo</p>
+</div>
+</div>
+<div id="monocitos-no-clásicos" class="section level4 unnumbered">
+<h4 class="unnumbered unnumbered">Monocitos No Clásicos</h4>
+<div class="figure">
+<img src="8.png" alt="" />
+<p class="caption">Gráfico 10: Número de monocitos no clásicos por tubo</p>
+</div>
+<p>Podemos notar que las subpoblaciones de monocitos en general son homogéneas; excepto en el caso del <em>paciente 1</em> y <em>paciente 5</em>. Estos pacientes tienen un <strong>gran número de monocitos no clásicos e intermedios</strong> en comparación con los demás pacientes y también con sus propias subpoblaciones de monocitos clásicos.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="conclusiones" class="section level1">
+<h1>Conclusiones</h1>
+<div id="datos-obtenidos" class="section level2">
+<h2>Datos obtenidos</h2>
+<ul>
+<li>Dentro de las poblaciones de monocitos y linfocitos B en los pacientes encontramos diferencias significativas entre los pacientes. El <strong>paciente 1</strong>, <strong>paciente 2</strong>, <strong>paciente 3</strong> y <strong>paciente 4</strong> tienen poblaciones significativamente mayores a los demás pacientes.</li>
+<li>Las subpoblaciones de monocitos mostraron diferencias entre el <strong>paciente 1</strong> y el <strong>paciente 6</strong> de los demás pacientes, por tener un número superior a los demás pacientes de monocitos intermedios y no clásicos.</li>
+</ul>
+</div>
+<div id="dificultades-al-momento-del-análisis" class="section level2">
+<h2>Dificultades al momento del análisis</h2>
+<p>Al momento del análisis encontré dificultades principalmente en elegir para las poblaciones menores (CD40, CD16, CD32, CD64, CD86 y CD80) el número que marca la división entre la población + y -. Solucioné esto al usar la función <strong>“values_count()”</strong>, una tabla que define la frecuencia de cada valor encontrado, en su posición [0] tiene el mayor valor, de esta manera pude encontrar el pico de la población.</p>
+</div>
+<div id="uso-del-control-de-isotipo" class="section level2">
+<h2>Uso del control de isotipo</h2>
+<p>El control de isotipo es un <strong>control negativo</strong> que estima la unión no específica en el experimento, de esta manera estima la cantidad de “ruido” o error que tienen las mediciones de las poblaciones de menor cantidad (como por ejemplo CD40). Este control se consigue al aplicar un anticuerpo del misma especie y en la misma concentración que el utilizado para la marcación de la población analizada. En el caso de las poblaciones celulares CD14 y CD19 que utilizamos para distinguir las células B tenemos dos poblaciones celulares muy diferenciadas (negativa y positiva) para cada uno de estos marcadores, esto conlleva a que se distingan de forma efectiva las <strong>+</strong> y <strong>-</strong> y consecuentemente se pueda hacer un gating efectivo. Por estas razones, en este caso, no tenemos problema con la unión no específica y no necesitamos control de isotipo.</p>
+</div>
+</div>
+</div>
+
+<div class="col-xs-2">
+
+
+</div>
+</div>
+	
+
+
+</div>
+</div>
+
+ <script>
+    $(document).ready(function () {
+	// add bootstrap table styles to pandoc tables
+	$('tr.header').parent('thead').parent('table').addClass('table table-striped table-hover');
+	
+		var images = $('.pages img');
+	images.filter(function() {
+	    if ($(this).parent().attr("class") == "figure") {
+		return(false)
+	    } else {
+		return(true);
+	    }
+	}).wrap("<div class='figure'></div>");
+	images.addClass("image-thumb").wrap("<div class='panel-body'></div>");
+	$('.figure p.caption').wrap("<div class='panel-footer'></div>");
+	$('.figure').addClass('panel panel-default');
+	
+		$('.pages img').addClass("image-lb");
+	$('.pages').magnificPopup({
+	    type:'image',
+	    closeOnContentClick: false,
+	    closeBtnInside: false,
+            delegate: '.image-lb',
+	    gallery: {enabled: false },
+            removalDelay: 500,
+            callbacks: {
+		beforeOpen: function() {
+                    // just a hack that adds mfp-anim class to markup
+                    this.st.image.markup = this.st.image.markup.replace('mfp-figure', 'mfp-figure mfp-with-anim');
+		}
+            },
+            mainClass: 'mfp-move-from-top',
+	    image: {
+	        verticalFit: true,
+		titleSrc: 'alt'
+	    }
+ 	});
+ 	
+	  
+	$('#toc ul li').first().addClass("active");
+	$('#toc ul li').attr("data-target", function() {
+            return($(this).children("a").attr("href"));
+	})
+	$('body .section.level1').first().addClass("active");
+	$('body .section.level1').not('.active').hide();
+	
+	$('#toc a[href*="#"], a[href^="#"]').click(function() {
+	    var id = $(this).attr("href");
+	    if (id === "#") return;
+	    if (id.substring(0, 8) === "#dyntab-") return;
+	    // Menu
+	    var menu_entry = $(".menu li[data-target='"+id+"']");
+	    if (menu_entry.length == 0) {
+		window.location.hash = id;
+		return;
+	    }
+	    menu_entry.addClass("active");
+	    $(".menu li").not(menu_entry).removeClass("active"); 
+	    toggle_page(id);
+	});
+
+	function toggle_page(id) {
+	    $(".page").not(page).removeClass("active").hide();
+	    window.page = id;
+	    var page = $(window.page);
+	    window.location.hash = window.page;
+	    //$(this).addClass("active");
+	    page.show();
+
+	    var totop = setInterval(function () {
+		$(".pages").animate({scrollTop: 0}, 0);
+	    }, 10);
+
+	    setTimeout(function () {
+		page.addClass("active");
+		setTimeout(function () {
+		    clearInterval(totop);
+		}, 1000);
+	    }, 100);
+	    
+	    window.dispatchEvent(new Event('resize'));
+	}
+
+
+	$(".menu li").click(function () {
+	    toggle_page($(this).data("target"));
+	    // Menu
+	    if (!$(this).data("target")) return;
+	    if ($(this).is(".active")) return;
+	    $(".menu li").not($(this)).removeClass("active");
+	    $(this).addClass("active");
+	});
+  
+	  
+	window.page = window.location.hash;
+	if (window.page != "") {
+	    $(".menu").find("li[data-target=" + window.page + "]").trigger("click");
+	}
+	/* init material bootstrap js */
+	$.material.init();
+    });
+ </script>
+
+
+  <!-- dynamically load mathjax for compatibility with self-contained -->
+ <script>
+   (function () {
+       var script = document.createElement("script");
+       script.type = "text/javascript";
+       script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+       document.getElementsByTagName("head")[0].appendChild(script);
+   })();
+ </script>
+ 
+</body>
+</html>
